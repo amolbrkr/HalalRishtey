@@ -82,12 +82,16 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (data != null && resultCode == Activity.RESULT_OK) {
-            val resultsArray = arrayOfNulls<Uri>(1)
-            resultsArray[0] = data.data
-            mFilePathCallback.onReceiveValue(resultsArray as Array<Uri>)
-            Log.d("ACTIVITY RESULT", data.data.toString())
+            val uri = data.data
+            if (uri != null) {
+                val resultsArray = arrayOf(uri)
+                mFilePathCallback.onReceiveValue(resultsArray)
+                Log.d("ACTIVITY RESULT", data.data.toString())
+            } else {
+                Toast.makeText(applicationContext, "File path is wrong!", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            Log.d("ACTIVITY RESULT", "Cannot get file path.")
+            Toast.makeText(applicationContext, "Cannot get data from Image Selector!", Toast.LENGTH_SHORT).show()
         }
     }
 
